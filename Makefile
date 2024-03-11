@@ -1,5 +1,5 @@
 # Uncomment the following line if you want to modify the Chisel code.
-#USE_CHISEL = 1
+USE_CHISEL = 1
 
 all:
 	@echo "This Makefile is used for development. Do not use it if you are not going to change the Chisel code."

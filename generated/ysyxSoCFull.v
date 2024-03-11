@@ -16,6 +16,15 @@
   `define RANDOM $random
 `endif // not def RANDOM
 
+// Users can define 'PRINTF_COND' to add an extra gate to prints.
+`ifndef PRINTF_COND_
+  `ifdef PRINTF_COND
+    `define PRINTF_COND_ (`PRINTF_COND)
+  `else  // PRINTF_COND
+    `define PRINTF_COND_ 1
+  `endif // PRINTF_COND
+`endif // not def PRINTF_COND_
+
 // Users can define 'ASSERT_VERBOSE_COND' to add an extra gate to assert error printing.
 `ifndef ASSERT_VERBOSE_COND_
   `ifdef ASSERT_VERBOSE_COND
@@ -2410,7 +2419,7 @@ module APBFanout(
   assign auto_out_0_pstrb = nodeOut_pstrb;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
 endmodule
 
-// external module ysyx_00000000
+// external module NPCCore
 
 module CPU(
   input         clock,
@@ -2475,10 +2484,10 @@ module CPU(
   wire [63:0] masterNodeOut_rdata = auto_master_out_rdata;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire [1:0]  masterNodeOut_rresp = auto_master_out_rresp;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire        masterNodeOut_rlast = auto_master_out_rlast;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
-  ysyx_00000000 cpu (	// @[src/main/scala/ysyxSoC/CPU.scala:38:21]
+  NPCCore cpu (	// @[src/main/scala/ysyxSoC/CPU.scala:39:21]
     .clock                   (clock),
     .reset                   (reset),
-    .io_interrupt            (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:35:23, :36:19, :38:21]
+    .io_interrupt            (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:23, :37:19, :39:21]
     .io_master_awready      (masterNodeOut_awready),	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
     .io_master_wready       (masterNodeOut_wready),	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
     .io_master_bvalid       (masterNodeOut_bvalid),	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
@@ -2490,24 +2499,24 @@ module CPU(
     .io_master_rdata   (masterNodeOut_rdata),	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
     .io_master_rresp   (masterNodeOut_rresp),	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
     .io_master_rlast   (masterNodeOut_rlast),	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
-    .io_slave_awvalid       (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:35:23, :36:19, :38:21]
-    .io_slave_awid     (4'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_awaddr   (32'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_awlen    (8'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_awsize   (3'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_awburst  (2'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_wvalid        (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:35:23, :36:19, :38:21]
-    .io_slave_wdata    (64'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_wstrb    (8'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_wlast    (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:35:23, :36:19, :38:21]
-    .io_slave_bready        (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:35:23, :36:19, :38:21]
-    .io_slave_arvalid       (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:35:23, :36:19, :38:21]
-    .io_slave_arid     (4'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_araddr   (32'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_arlen    (8'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_arsize   (3'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_arburst  (2'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:19, :38:21]
-    .io_slave_rready        (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:35:23, :36:19, :38:21]
+    .io_slave_awvalid       (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:23, :37:19, :39:21]
+    .io_slave_awid     (4'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_awaddr   (32'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_awlen    (8'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_awsize   (3'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_awburst  (2'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_wvalid        (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:23, :37:19, :39:21]
+    .io_slave_wdata    (64'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_wstrb    (8'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_wlast    (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:23, :37:19, :39:21]
+    .io_slave_bready        (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:23, :37:19, :39:21]
+    .io_slave_arvalid       (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:23, :37:19, :39:21]
+    .io_slave_arid     (4'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_araddr   (32'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_arlen    (8'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_arsize   (3'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_arburst  (2'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:37:19, :39:21]
+    .io_slave_rready        (1'h0),	// @[src/main/scala/ysyxSoC/CPU.scala:36:23, :37:19, :39:21]
     .io_master_awvalid      (masterNodeOut_awvalid),
     .io_master_awid    (masterNodeOut_awid),
     .io_master_awaddr  (masterNodeOut_awaddr),
@@ -4272,7 +4281,60 @@ endmodule
 
 // external module flash
 
-// external module bitrev
+module bitrevChisel(
+  input  io_sck,	// @[src/main/scala/ysyxSoC/BitRev.scala:12:14]
+         io_ss,	// @[src/main/scala/ysyxSoC/BitRev.scala:12:14]
+         io_mosi,	// @[src/main/scala/ysyxSoC/BitRev.scala:12:14]
+  output io_miso	// @[src/main/scala/ysyxSoC/BitRev.scala:12:14]
+);
+
+  reg  [7:0] bits;	// @[src/main/scala/ysyxSoC/BitRev.scala:15:23]
+  reg  [3:0] cnt;	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22]
+  wire [7:0] _io_miso_T_1 = bits >> cnt[2:0];	// @[src/main/scala/ysyxSoC/BitRev.scala:15:23, :16:22, :22:{22,26}]
+  wire       _io_miso_output = ~(cnt[3]) | _io_miso_T_1[0];	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22, :17:13, :21:{14,19}, :22:{15,22}]
+  `ifndef SYNTHESIS	// @[src/main/scala/ysyxSoC/BitRev.scala:23:13]
+    always @(posedge io_sck) begin	// @[src/main/scala/ysyxSoC/BitRev.scala:23:13]
+      if ((`PRINTF_COND_) & cnt[3] & ~io_ss)	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22, :21:14, :23:13]
+        $fwrite(32'h80000002, "out: cnt: %d, io.miso: %d\n", cnt, _io_miso_output);	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22, :17:13, :21:19, :22:15, :23:13]
+      if ((`PRINTF_COND_) & ~(cnt[3]) & ~io_ss)	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22, :21:{14,19}, :23:13, :25:13]
+        $fwrite(32'h80000002, "cnt: %d, io.mosi: %d\n", cnt, io_mosi);	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22, :23:13, :25:13]
+    end // always @(posedge)
+  `endif // not def SYNTHESIS
+  always @(posedge io_sck or posedge io_ss) begin	// @[src/main/scala/ysyxSoC/BitRev.scala:12:14]
+    if (io_ss) begin	// @[src/main/scala/ysyxSoC/BitRev.scala:12:14]
+      bits <= 8'h0;	// @[src/main/scala/ysyxSoC/BitRev.scala:15:23]
+      cnt <= 4'h0;	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22]
+    end
+    else begin	// @[src/main/scala/ysyxSoC/BitRev.scala:12:14]
+      bits <= {8{~(cnt[3])}} & {7'h0, io_mosi} << 3'h7 - cnt[2:0] | bits;	// @[src/main/scala/ysyxSoC/BitRev.scala:15:23, :16:22, :17:13, :21:{14,19}, :22:15, :26:{12,32,40,45}]
+      cnt <= cnt + 4'h1;	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22, :18:16]
+    end
+  end // always @(posedge, posedge)
+  `ifdef ENABLE_INITIAL_REG_
+    `ifdef FIRRTL_BEFORE_INITIAL
+      `FIRRTL_BEFORE_INITIAL
+    `endif // FIRRTL_BEFORE_INITIAL
+    logic [31:0] _RANDOM[0:0];
+    initial begin
+      `ifdef INIT_RANDOM_PROLOG_
+        `INIT_RANDOM_PROLOG_
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT
+        _RANDOM[/*Zero width*/ 1'b0] = `RANDOM;
+        bits = _RANDOM[/*Zero width*/ 1'b0][7:0];	// @[src/main/scala/ysyxSoC/BitRev.scala:15:23]
+        cnt = _RANDOM[/*Zero width*/ 1'b0][11:8];	// @[src/main/scala/ysyxSoC/BitRev.scala:15:23, :16:22]
+      `endif // RANDOMIZE_REG_INIT
+      if (io_ss) begin
+        bits = 8'h0;	// @[src/main/scala/ysyxSoC/BitRev.scala:15:23]
+        cnt = 4'h0;	// @[src/main/scala/ysyxSoC/BitRev.scala:16:22]
+      end
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL
+      `FIRRTL_AFTER_INITIAL
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_miso = _io_miso_output;	// @[src/main/scala/ysyxSoC/BitRev.scala:17:13, :21:19, :22:15]
+endmodule
 
 // external module psram
 
@@ -4303,7 +4365,7 @@ module ysyxSoCFull(
                 externalPins_uart_tx	// @[src/main/scala/ysyxSoC/SoC.scala:141:26]
 );
 
-  wire        _bitrev_miso;	// @[src/main/scala/ysyxSoC/SoC.scala:131:24]
+  wire        _bitrev_io_miso;	// @[src/main/scala/ysyxSoC/SoC.scala:131:24]
   wire        _flash_miso;	// @[src/main/scala/ysyxSoC/SoC.scala:128:23]
   wire        _asic_spi_sck;	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
   wire [7:0]  _asic_spi_ss;	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
@@ -4324,7 +4386,7 @@ module ysyxSoCFull(
   ysyxSoCASIC asic (	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
     .clock      (clock),
     .reset      (reset),
-    .spi_miso   (_bitrev_miso & _flash_miso),	// @[src/main/scala/ysyxSoC/SoC.scala:128:23, :131:24, :134:69]
+    .spi_miso   (_bitrev_io_miso & _flash_miso),	// @[src/main/scala/ysyxSoC/SoC.scala:128:23, :131:24, :134:69]
     .uart_rx    (externalPins_uart_rx),
     .psram_dio  (_dio_wire),
     .sdram_dq   (_dq_wire),
@@ -4368,11 +4430,11 @@ module ysyxSoCFull(
     .mosi (_asic_spi_mosi),	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
     .miso (_flash_miso)
   );
-  bitrev bitrev (	// @[src/main/scala/ysyxSoC/SoC.scala:131:24]
-    .sck  (_asic_spi_sck),	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
-    .ss   (_asic_spi_ss[7]),	// @[src/main/scala/ysyxSoC/SoC.scala:100:24, :133:33]
-    .mosi (_asic_spi_mosi),	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
-    .miso (_bitrev_miso)
+  bitrevChisel bitrev (	// @[src/main/scala/ysyxSoC/SoC.scala:131:24]
+    .io_sck  (_asic_spi_sck),	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
+    .io_ss   (_asic_spi_ss[7]),	// @[src/main/scala/ysyxSoC/SoC.scala:100:24, :133:33]
+    .io_mosi (_asic_spi_mosi),	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
+    .io_miso (_bitrev_io_miso)
   );
   psram psram (	// @[src/main/scala/ysyxSoC/SoC.scala:136:23]
     .sck  (_asic_psram_sck),	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]

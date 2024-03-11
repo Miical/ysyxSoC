@@ -13,7 +13,8 @@ object CPUAXI4BundleParameters {
   def apply() = AXI4BundleParameters(addrBits = 32, dataBits = 64, idBits = ChipLinkParam.idBits)
 }
 
-class ysyx_00000000 extends BlackBox {
+// ysyx_00000000
+class NPCCore extends BlackBox {
   val io = IO(new Bundle {
     val clock = Input(Clock())
     val reset = Input(Reset())
@@ -35,7 +36,7 @@ class CPU(idBits: Int)(implicit p: Parameters) extends LazyModule {
     val interrupt = IO(Input(Bool()))
     val slave = IO(Flipped(AXI4Bundle(CPUAXI4BundleParameters())))
 
-    val cpu = Module(new ysyx_00000000)
+    val cpu = Module(new NPCCore)
     cpu.io.clock := clock
     cpu.io.reset := reset
     cpu.io.io_interrupt := interrupt
