@@ -39,7 +39,7 @@ class psramChisel extends RawModule {
 
   withClockAndReset(io.sck.asClock, io.ce_n.asBool.asAsyncReset) {
     val psram_size = 0x100000
-    val cmd_len = 8
+    val cmd_len = 2
     val addr_len = 24 / 4
     val read_delay_len = 7
     val data_len = 32 / 4
@@ -51,14 +51,14 @@ class psramChisel extends RawModule {
     cnt := cnt + 1.U
 
 
-    val cmd = RegInit(0.U(cmd_len.W))
+    val cmd = RegInit(0.U(8.W))
     val addr = RegInit(0.U(24.W))
     val data = RegInit(0.U(32.W))
 
     val is_write = (cmd === 0x38.U)
 
     when (cnt < cmd_len.U) {
-      cmd := (cmd << 1.U | din(0))
+      cmd := (cmd << 4.U | din)
     }
     .elsewhen (cmd_len.U <= cnt && cnt < (cmd_len + addr_len).U) {
       addr := (addr << 4.U | din)
@@ -70,6 +70,7 @@ class psramChisel extends RawModule {
           data := (mem(addr) | (mem(addr + 1.U) << 8.U) | (mem(addr + 2.U) << 16.U) | (mem(addr + 3.U) << 24.U))
         }
         when ((cmd_len + addr_len + read_delay_len).U <= cnt) {
+          // printf("read: addr: %x, data: %x\n", (addr + ((cnt - cmd_len.U - addr_len.U - read_delay_len.U) >> 1.U)), data(3, 0))
           dout := data(3, 0)
           dout_en := true.B
           data := data >> 4.U
@@ -82,12 +83,12 @@ class psramChisel extends RawModule {
           data := din
         } .otherwise {
           mem(addr + (cnt - (cmd_len + addr_len).U)(7, 1)) := Cat(din, data(3, 0))
-          printf("write: addr: %x, data: %x\n", addr + (cnt - (cmd_len + addr_len).U)(7, 1), Cat(din, data(3, 0)))
+          // printf("write: addr: %x, data: %x\n", addr + (cnt - (cmd_len + addr_len).U)(7, 1), Cat(din, data(3, 0)))
         }
       }
     }
 
-    printf("cnt: %d, addr: %x, cmd: %x, di: %b\n", cnt, addr, cmd, din)
+    // printf("cnt: %d, addr: %x, cmd: %x, di: %b\n", cnt, addr, cmd, din)
   }
 }
 
