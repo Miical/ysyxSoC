@@ -179,19 +179,19 @@ endmodule
 
 // VCS coverage exclude_file
 module mem_combMem_0(	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
-  input  [19:0] R0_addr,
+  input  [21:0] R0_addr,
   input         R0_en,
                 R0_clk,
-  input  [19:0] R1_addr,
+  input  [21:0] R1_addr,
   input         R1_en,
                 R1_clk,
-  input  [19:0] R2_addr,
+  input  [21:0] R2_addr,
   input         R2_en,
                 R2_clk,
-  input  [19:0] R3_addr,
+  input  [21:0] R3_addr,
   input         R3_en,
                 R3_clk,
-  input  [19:0] W0_addr,
+  input  [21:0] W0_addr,
   input         W0_en,
                 W0_clk,
   input  [7:0]  W0_data,
@@ -201,7 +201,7 @@ module mem_combMem_0(	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
                 R3_data
 );
 
-  reg [7:0] Memory[0:1048575];	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
+  reg [7:0] Memory[0:4194303];	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
   always @(posedge W0_clk) begin	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
     if (W0_en)	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
       Memory[W0_addr] <= W0_data;	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
@@ -211,9 +211,9 @@ module mem_combMem_0(	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
     initial begin	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
       `INIT_RANDOM_PROLOG_	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
       `ifdef RANDOMIZE_MEM_INIT	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
-        for (logic [20:0] i = 21'h0; i < 21'h100000; i += 21'h1) begin
+        for (logic [22:0] i = 23'h0; i < 23'h400000; i += 23'h1) begin
           _RANDOM_MEM = `RANDOM;	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
-          Memory[i[19:0]] = _RANDOM_MEM[7:0];	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
+          Memory[i[21:0]] = _RANDOM_MEM[7:0];	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
         end	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
       `endif // RANDOMIZE_MEM_INIT
     end // initial
@@ -4735,19 +4735,19 @@ module psramChisel(
     .din    (_din_buf_din)
   );
   mem_combMem_0 mem_ext (	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18]
-    .R0_addr (addr[19:0]),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :70:23]
+    .R0_addr (addr[21:0]),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :70:23]
     .R0_en   (_GEN_3),	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18, :60:28, :63:66, :68:24]
     .R0_clk  (io_sck),
-    .R1_addr (addr[19:0] + 20'h1),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :64:12, :70:42]
+    .R1_addr (addr[21:0] + 22'h1),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :70:42]
     .R1_en   (_GEN_3),	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18, :60:28, :63:66, :68:24]
     .R1_clk  (io_sck),
-    .R2_addr (addr[19:0] + 20'h2),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :64:12, :70:69]
+    .R2_addr (addr[21:0] + 22'h2),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :70:{42,69}]
     .R2_en   (_GEN_3),	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18, :60:28, :63:66, :68:24]
     .R2_clk  (io_sck),
-    .R3_addr (addr[19:0] + 20'h3),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :64:12, :70:97]
+    .R3_addr (addr[21:0] + 22'h3),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :70:{42,97}]
     .R3_en   (_GEN_3),	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18, :60:28, :63:66, :68:24]
     .R3_clk  (io_sck),
-    .W0_addr (addr[19:0] + {13'h0, _GEN_5[7:1]}),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :64:12, :85:{20,27,52}]
+    .W0_addr (addr[21:0] + {15'h0, _GEN_5[7:1]}),	// @[src/main/scala/ysyxSoC/PSRAM.scala:55:23, :70:42, :85:{20,27,52}]
     .W0_en   (~(_GEN | _GEN_0 | ~is_write) & cnt[0]),	// @[src/main/scala/ysyxSoC/PSRAM.scala:48:18, :50:22, :58:25, :60:{15,28}, :63:{33,66}, :68:{13,24}, :82:{19,24}]
     .W0_clk  (io_sck),
     .W0_data ({_din_buf_din, data[3:0]}),	// @[src/main/scala/ysyxSoC/PSRAM.scala:56:23, :85:{66,76}, src/main/scala/ysyxSoC/TriState.scala:32:21]

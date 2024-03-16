@@ -38,7 +38,7 @@ class psramChisel extends RawModule {
   val din = TriStateInBuf(io.dio, dout, dout_en)
 
   withClockAndReset(io.sck.asClock, io.ce_n.asBool.asAsyncReset) {
-    val psram_size = 0x100000
+    val psram_size = 0x400000
     val cmd_len = 2
     val addr_len = 24 / 4
     val read_delay_len = 7
