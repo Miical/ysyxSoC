@@ -61,10 +61,11 @@ class sdramChisel extends RawModule {
 
     val cmd = Cat(io.cs, io.ras, io.cas, io.we)
     val mode = RegInit(0.U(13.W))
+    val wmask = ~io.dqm
     val cas_latency = mode(6, 4)
     val burst_length = mode(2, 0)
 
-    val row = RegInit(0.U(log2Ceil(8192).W))
+    val rows = RegInit(VecInit(Seq.fill(4)(0.U(13.W))))
 
     val write_burst_cnt = RegInit(0.U(3.W))
     val write_burst_addr = RegInit(0.U(log2Ceil(4 * 8192 * 512).W))
@@ -80,15 +81,21 @@ class sdramChisel extends RawModule {
       rdelay_en(i) := rdelay_en(i - 1)
     }
 
+    def wdata_gen(org_data: UInt, data: UInt, mask: UInt): UInt = {
+      Cat(Mux(mask(1), data(15, 8), org_data(15, 8)),
+          Mux(mask(0), data(7, 0), org_data(7, 0)))
+    }
+
     when (cmd === set_mode) {
       mode := io.a
       // printf("set mode: %x\n", io.a)
     } .elsewhen (cmd === active) {
-      row := (io.ba * 8192.U) + io.a
-      // printf("active row: %x\n", io.a)
+      rows(io.ba) := io.a
+      // printf("active: %x, %x row\n", io.ba, io.a)
     } .elsewhen (cmd === read) {
       val col = io.a
-      val unit_addr = (row * 512.U) + io.a
+      val unit_addr = ((io.ba * 8192.U + rows(io.ba)) * 512.U) + col
+
 
       read_burst_addr := unit_addr
       read_burst_cnt := burst_length
@@ -97,19 +104,23 @@ class sdramChisel extends RawModule {
       rdelay_en(0) := true.B
     } .elsewhen (cmd === write) {
       val col = io.a
-      val unit_addr = (row * 512.U) + io.a
+      val unit_addr = ((io.ba * 8192.U + rows(io.ba)) * 512.U) + col
 
       write_burst_addr := unit_addr
       write_burst_cnt := burst_length
 
-      mem.write(unit_addr, dqin)
-      // printf("write: %x\n", dqin)
+      val wdata = wdata_gen(mem.read(unit_addr), dqin, wmask)
+
+      mem.write(unit_addr, wdata)
+      // printf("write addr: %x, data: %x, data2: %x, wmask = %b\n", unit_addr, dqin, wdata, wmask)
     }
 
     when (write_burst_cnt =/= 0.U) {
       write_burst_cnt := write_burst_cnt - 1.U
-      mem.write(write_burst_addr + (burst_length - write_burst_cnt + 1.U), dqin)
-      // printf("write burst addr = %x, data = %x\n", write_burst_addr + (burst_length - write_burst_cnt + 1.U), dqin)
+      val addr = write_burst_addr + (burst_length - write_burst_cnt + 1.U)
+      val wdata = wdata_gen(mem.read(addr), dqin, wmask)
+      mem.write(addr, wdata)
+      // printf("write burst addr = %x, data = %x, data2 = %x, wmask = %b\n", addr, dqin, wdata, wmask)
     }
 
     when (read_burst_cnt =/= 0.U) {
@@ -124,7 +135,7 @@ class sdramChisel extends RawModule {
       // printf("read: %x\n", rdelay_data(cas_latency - 1.U))
     }
 
-    // when (cmd =/= 7.U && cmd =/= 1.U) { printf("cmd = %x\n", cmd) }
+     // when (cmd =/= 7.U && cmd =/= 1.U) { printf("cmd = %x\n", cmd) }
   }
 }
 
