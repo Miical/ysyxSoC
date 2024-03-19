@@ -19,8 +19,8 @@ class SDRAMIO extends Bundle {
   val we  = Output(Bool())
   val a   = Output(UInt(13.W))
   val ba  = Output(UInt(2.W))
-  val dqm = Output(UInt(2.W))
-  val dq  = Analog(16.W)
+  val dqm = Output(UInt(4.W))
+  val dq  = Analog(32.W)
 }
 
 class sdram_top_axi extends BlackBox {
@@ -48,7 +48,7 @@ class sdram extends BlackBox {
 class sdramChisel extends RawModule {
   val io = IO(Flipped(new SDRAMIO))
 
-  val dqout = Wire(UInt(16.W))
+  val dqout = Wire(UInt(32.W))
   val dqout_en = Wire(Bool())
   dqout := 0.U
   dqout_en := false.B
@@ -57,7 +57,7 @@ class sdramChisel extends RawModule {
   withClockAndReset(io.clk.asClock, (!io.cke).asAsyncReset) {
     val set_mode :: auto_refresh :: precharge :: active :: write :: read :: burst_terminate :: nop :: Nil = Enum(8)
 
-    val mem = Mem(4 * 8192 * 512, UInt(16.W))
+    val mem = Mem(4 * 8192 * 512, UInt(32.W))
 
     val cmd = Cat(io.cs, io.ras, io.cas, io.we)
     val mode = RegInit(0.U(13.W))
@@ -72,7 +72,7 @@ class sdramChisel extends RawModule {
     val read_burst_cnt = RegInit(0.U(3.W))
     val read_burst_addr = RegInit(0.U(log2Ceil(4 * 8192 * 512).W))
 
-    val rdelay_data = Mem(16, UInt(16.W))
+    val rdelay_data = Mem(16, UInt(32.W))
     val rdelay_en = Mem(16, Bool())
     rdelay_data(0) := 0.U
     rdelay_en(0) := false.B
@@ -82,7 +82,9 @@ class sdramChisel extends RawModule {
     }
 
     def wdata_gen(org_data: UInt, data: UInt, mask: UInt): UInt = {
-      Cat(Mux(mask(1), data(15, 8), org_data(15, 8)),
+      Cat(Mux(mask(3), data(31, 24), org_data(31, 24)),
+          Mux(mask(2), data(23, 16), org_data(23, 16)),
+          Mux(mask(1), data(15, 8), org_data(15, 8)),
           Mux(mask(0), data(7, 0), org_data(7, 0)))
     }
 
