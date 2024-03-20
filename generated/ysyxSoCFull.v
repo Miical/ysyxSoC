@@ -2714,9 +2714,7 @@ module APBFanout(
   input         auto_out_5_pready,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
                 auto_out_5_pslverr,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
   input  [31:0] auto_out_5_prdata,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
-  input         auto_out_4_pready,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
-                auto_out_4_pslverr,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
-  input  [31:0] auto_out_4_prdata,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
+                auto_out_4_prdata,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
   input         auto_out_3_pready,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
                 auto_out_3_pslverr,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
   input  [31:0] auto_out_3_prdata,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
@@ -2794,8 +2792,6 @@ module APBFanout(
   wire        x1_nodeOut_2_pready = auto_out_3_pready;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire        x1_nodeOut_2_pslverr = auto_out_3_pslverr;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire [31:0] x1_nodeOut_2_prdata = auto_out_3_prdata;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
-  wire        x1_nodeOut_3_pready = auto_out_4_pready;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
-  wire        x1_nodeOut_3_pslverr = auto_out_4_pslverr;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire [31:0] x1_nodeOut_3_prdata = auto_out_4_prdata;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire        x1_nodeOut_4_pready = auto_out_5_pready;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire        x1_nodeOut_4_pslverr = auto_out_5_pslverr;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
@@ -2803,6 +2799,8 @@ module APBFanout(
   wire        x1_nodeOut_5_pready = auto_out_6_pready;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire        x1_nodeOut_5_pslverr = auto_out_6_pslverr;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire [31:0] x1_nodeOut_5_prdata = auto_out_6_prdata;	// @[src/main/scala/diplomacy/Nodes.scala:1205:17]
+  wire        x1_nodeOut_3_pready = 1'h1;	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1205:17]
+  wire        x1_nodeOut_3_pslverr = 1'h0;	// @[src/main/scala/chisel3/util/Mux.scala:30:73, src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1205:17]
   wire [2:0]  nodeIn_pprot = 3'h1;	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1205:17, :1214:17]
   wire [2:0]  nodeOut_pprot = 3'h1;	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1205:17, :1214:17]
   wire [2:0]  x1_nodeOut_pprot = 3'h1;	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1205:17, :1214:17]
@@ -2879,12 +2877,12 @@ module APBFanout(
   wire        x1_nodeOut_5_penable = sel_6 & nodeIn_penable;	// @[src/main/scala/amba/apb/Xbar.scala:44:24, :48:28, src/main/scala/diplomacy/Nodes.scala:1205:17, :1214:17]
   wire        nodeIn_pready =
     ~(sel_0 & ~nodeOut_pready | sel_1 & ~x1_nodeOut_pready | sel_2 & ~x1_nodeOut_1_pready
-      | sel_3 & ~x1_nodeOut_2_pready | sel_4 & ~x1_nodeOut_3_pready | sel_5
-      & ~x1_nodeOut_4_pready | sel_6 & ~x1_nodeOut_5_pready);	// @[src/main/scala/amba/apb/Xbar.scala:44:24, :51:{21,44}, src/main/scala/chisel3/util/Mux.scala:30:73, src/main/scala/diplomacy/Nodes.scala:1205:17, :1214:17]
+      | sel_3 & ~x1_nodeOut_2_pready | sel_5 & ~x1_nodeOut_4_pready | sel_6
+      & ~x1_nodeOut_5_pready);	// @[src/main/scala/amba/apb/Xbar.scala:44:24, :51:{21,44}, src/main/scala/chisel3/util/Mux.scala:30:73, src/main/scala/diplomacy/Nodes.scala:1205:17, :1214:17]
   wire        nodeIn_pslverr =
     sel_0 & nodeOut_pslverr | sel_1 & x1_nodeOut_pslverr | sel_2 & x1_nodeOut_1_pslverr
-    | sel_3 & x1_nodeOut_2_pslverr | sel_4 & x1_nodeOut_3_pslverr | sel_5
-    & x1_nodeOut_4_pslverr | sel_6 & x1_nodeOut_5_pslverr;	// @[src/main/scala/amba/apb/Xbar.scala:44:24, src/main/scala/chisel3/util/Mux.scala:30:73, src/main/scala/diplomacy/Nodes.scala:1205:17, :1214:17]
+    | sel_3 & x1_nodeOut_2_pslverr | sel_5 & x1_nodeOut_4_pslverr | sel_6
+    & x1_nodeOut_5_pslverr;	// @[src/main/scala/amba/apb/Xbar.scala:44:24, src/main/scala/chisel3/util/Mux.scala:30:73, src/main/scala/diplomacy/Nodes.scala:1205:17, :1214:17]
   wire [31:0] nodeIn_prdata =
     (sel_0 ? nodeOut_prdata : 32'h0) | (sel_1 ? x1_nodeOut_prdata : 32'h0)
     | (sel_2 ? x1_nodeOut_1_prdata : 32'h0) | (sel_3 ? x1_nodeOut_2_prdata : 32'h0)
@@ -3134,7 +3132,400 @@ module APBUart16550(
   assign auto_in_prdata = nodeIn_prdata;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
 endmodule
 
-// external module gpio_top_apb
+module gpioChisel(
+  input         clock,
+                reset,
+                io_in_psel,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_in_penable,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_in_pwrite,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+  input  [31:0] io_in_paddr,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_in_pwdata,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+  input  [3:0]  io_in_pstrb,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+  input  [15:0] io_gpio_in,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+  output [31:0] io_in_prdata,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+  output [15:0] io_gpio_out,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+  output [7:0]  io_gpio_seg_0,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_gpio_seg_1,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_gpio_seg_2,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_gpio_seg_3,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_gpio_seg_4,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_gpio_seg_5,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_gpio_seg_6,	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+                io_gpio_seg_7	// @[src/main/scala/ysyxSoC/GPIO.scala:29:14]
+);
+
+  reg  [6:0]  casez_tmp;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  reg  [6:0]  casez_tmp_0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  reg  [6:0]  casez_tmp_1;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  reg  [6:0]  casez_tmp_2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  reg  [6:0]  casez_tmp_3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  reg  [6:0]  casez_tmp_4;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  reg  [6:0]  casez_tmp_5;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  reg  [6:0]  casez_tmp_6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  reg  [15:0] led;	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20]
+  reg  [31:0] seg;	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20]
+  wire        _GEN = io_in_psel & io_in_penable & io_in_pwrite;	// @[src/main/scala/ysyxSoC/GPIO.scala:48:37]
+  wire        _org_data_T = io_in_paddr == 32'h10002000;	// @[src/main/scala/ysyxSoC/GPIO.scala:49:24]
+  `ifndef SYNTHESIS	// @[src/main/scala/ysyxSoC/GPIO.scala:49:11]
+    always @(posedge clock) begin	// @[src/main/scala/ysyxSoC/GPIO.scala:49:11]
+      if (_GEN & ~reset & ~(_org_data_T | io_in_paddr == 32'h10002008)) begin	// @[src/main/scala/ysyxSoC/GPIO.scala:48:37, :49:{11,24,42,57}]
+        if (`ASSERT_VERBOSE_COND_)	// @[src/main/scala/ysyxSoC/GPIO.scala:49:11]
+          $error("Assertion failed\n    at GPIO.scala:49 assert(io.in.paddr === 0x10002000L.U || io.in.paddr === 0x10002008L.U)\n");	// @[src/main/scala/ysyxSoC/GPIO.scala:49:11]
+        if (`STOP_COND_)	// @[src/main/scala/ysyxSoC/GPIO.scala:49:11]
+          $fatal;	// @[src/main/scala/ysyxSoC/GPIO.scala:49:11]
+      end
+    end // always @(posedge)
+  `endif // not def SYNTHESIS
+  wire [31:0] org_data = _org_data_T ? {16'h0, led} : seg;	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20, :33:20, :49:24, :50:23]
+  wire [15:0] wdata_lo =
+    {io_in_pstrb[1] ? io_in_pwdata[15:8] : org_data[15:8],
+     io_in_pstrb[0] ? io_in_pwdata[7:0] : org_data[7:0]};	// @[src/main/scala/ysyxSoC/GPIO.scala:42:8, :44:{12,17,26,43}, :45:{12,17,26,42}, :50:23]
+  wire [15:0] wdata_hi =
+    {io_in_pstrb[3] ? io_in_pwdata[31:24] : org_data[31:24],
+     io_in_pstrb[2] ? io_in_pwdata[23:16] : org_data[23:16]};	// @[src/main/scala/ysyxSoC/GPIO.scala:42:{8,12,17,26,44}, :43:{12,17,26,44}, :50:23]
+  wire [31:0] wdata = {wdata_hi, wdata_lo};	// @[src/main/scala/ysyxSoC/GPIO.scala:42:8]
+  always_comb begin	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    casez (seg[3:0])	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+      4'b0000:
+        casez_tmp = 7'h40;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0001:
+        casez_tmp = 7'h79;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0010:
+        casez_tmp = 7'h24;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0011:
+        casez_tmp = 7'h30;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0100:
+        casez_tmp = 7'h19;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0101:
+        casez_tmp = 7'h12;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0110:
+        casez_tmp = 7'h2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0111:
+        casez_tmp = 7'h78;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1000:
+        casez_tmp = 7'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1001:
+        casez_tmp = 7'h10;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1010:
+        casez_tmp = 7'h8;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1011:
+        casez_tmp = 7'h3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1100:
+        casez_tmp = 7'h46;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1101:
+        casez_tmp = 7'h21;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1110:
+        casez_tmp = 7'h6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      default:
+        casez_tmp = 7'hE;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    endcase	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+  end // always_comb
+  wire [6:0]  io_gpio_seg_0_h = casez_tmp;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  always_comb begin	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    casez (seg[7:4])	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+      4'b0000:
+        casez_tmp_0 = 7'h40;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0001:
+        casez_tmp_0 = 7'h79;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0010:
+        casez_tmp_0 = 7'h24;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0011:
+        casez_tmp_0 = 7'h30;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0100:
+        casez_tmp_0 = 7'h19;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0101:
+        casez_tmp_0 = 7'h12;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0110:
+        casez_tmp_0 = 7'h2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0111:
+        casez_tmp_0 = 7'h78;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1000:
+        casez_tmp_0 = 7'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1001:
+        casez_tmp_0 = 7'h10;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1010:
+        casez_tmp_0 = 7'h8;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1011:
+        casez_tmp_0 = 7'h3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1100:
+        casez_tmp_0 = 7'h46;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1101:
+        casez_tmp_0 = 7'h21;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1110:
+        casez_tmp_0 = 7'h6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      default:
+        casez_tmp_0 = 7'hE;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    endcase	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+  end // always_comb
+  wire [6:0]  io_gpio_seg_1_h = casez_tmp_0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  always_comb begin	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    casez (seg[11:8])	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+      4'b0000:
+        casez_tmp_1 = 7'h40;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0001:
+        casez_tmp_1 = 7'h79;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0010:
+        casez_tmp_1 = 7'h24;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0011:
+        casez_tmp_1 = 7'h30;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0100:
+        casez_tmp_1 = 7'h19;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0101:
+        casez_tmp_1 = 7'h12;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0110:
+        casez_tmp_1 = 7'h2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0111:
+        casez_tmp_1 = 7'h78;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1000:
+        casez_tmp_1 = 7'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1001:
+        casez_tmp_1 = 7'h10;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1010:
+        casez_tmp_1 = 7'h8;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1011:
+        casez_tmp_1 = 7'h3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1100:
+        casez_tmp_1 = 7'h46;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1101:
+        casez_tmp_1 = 7'h21;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1110:
+        casez_tmp_1 = 7'h6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      default:
+        casez_tmp_1 = 7'hE;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    endcase	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+  end // always_comb
+  wire [6:0]  io_gpio_seg_2_h = casez_tmp_1;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  always_comb begin	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    casez (seg[15:12])	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+      4'b0000:
+        casez_tmp_2 = 7'h40;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0001:
+        casez_tmp_2 = 7'h79;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0010:
+        casez_tmp_2 = 7'h24;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0011:
+        casez_tmp_2 = 7'h30;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0100:
+        casez_tmp_2 = 7'h19;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0101:
+        casez_tmp_2 = 7'h12;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0110:
+        casez_tmp_2 = 7'h2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0111:
+        casez_tmp_2 = 7'h78;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1000:
+        casez_tmp_2 = 7'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1001:
+        casez_tmp_2 = 7'h10;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1010:
+        casez_tmp_2 = 7'h8;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1011:
+        casez_tmp_2 = 7'h3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1100:
+        casez_tmp_2 = 7'h46;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1101:
+        casez_tmp_2 = 7'h21;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1110:
+        casez_tmp_2 = 7'h6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      default:
+        casez_tmp_2 = 7'hE;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    endcase	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+  end // always_comb
+  wire [6:0]  io_gpio_seg_3_h = casez_tmp_2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  always_comb begin	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    casez (seg[19:16])	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+      4'b0000:
+        casez_tmp_3 = 7'h40;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0001:
+        casez_tmp_3 = 7'h79;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0010:
+        casez_tmp_3 = 7'h24;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0011:
+        casez_tmp_3 = 7'h30;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0100:
+        casez_tmp_3 = 7'h19;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0101:
+        casez_tmp_3 = 7'h12;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0110:
+        casez_tmp_3 = 7'h2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0111:
+        casez_tmp_3 = 7'h78;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1000:
+        casez_tmp_3 = 7'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1001:
+        casez_tmp_3 = 7'h10;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1010:
+        casez_tmp_3 = 7'h8;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1011:
+        casez_tmp_3 = 7'h3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1100:
+        casez_tmp_3 = 7'h46;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1101:
+        casez_tmp_3 = 7'h21;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1110:
+        casez_tmp_3 = 7'h6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      default:
+        casez_tmp_3 = 7'hE;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    endcase	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+  end // always_comb
+  wire [6:0]  io_gpio_seg_4_h = casez_tmp_3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  always_comb begin	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    casez (seg[23:20])	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+      4'b0000:
+        casez_tmp_4 = 7'h40;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0001:
+        casez_tmp_4 = 7'h79;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0010:
+        casez_tmp_4 = 7'h24;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0011:
+        casez_tmp_4 = 7'h30;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0100:
+        casez_tmp_4 = 7'h19;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0101:
+        casez_tmp_4 = 7'h12;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0110:
+        casez_tmp_4 = 7'h2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0111:
+        casez_tmp_4 = 7'h78;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1000:
+        casez_tmp_4 = 7'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1001:
+        casez_tmp_4 = 7'h10;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1010:
+        casez_tmp_4 = 7'h8;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1011:
+        casez_tmp_4 = 7'h3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1100:
+        casez_tmp_4 = 7'h46;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1101:
+        casez_tmp_4 = 7'h21;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1110:
+        casez_tmp_4 = 7'h6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      default:
+        casez_tmp_4 = 7'hE;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    endcase	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+  end // always_comb
+  wire [6:0]  io_gpio_seg_5_h = casez_tmp_4;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  always_comb begin	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    casez (seg[27:24])	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+      4'b0000:
+        casez_tmp_5 = 7'h40;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0001:
+        casez_tmp_5 = 7'h79;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0010:
+        casez_tmp_5 = 7'h24;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0011:
+        casez_tmp_5 = 7'h30;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0100:
+        casez_tmp_5 = 7'h19;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0101:
+        casez_tmp_5 = 7'h12;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0110:
+        casez_tmp_5 = 7'h2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0111:
+        casez_tmp_5 = 7'h78;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1000:
+        casez_tmp_5 = 7'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1001:
+        casez_tmp_5 = 7'h10;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1010:
+        casez_tmp_5 = 7'h8;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1011:
+        casez_tmp_5 = 7'h3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1100:
+        casez_tmp_5 = 7'h46;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1101:
+        casez_tmp_5 = 7'h21;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1110:
+        casez_tmp_5 = 7'h6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      default:
+        casez_tmp_5 = 7'hE;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    endcase	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+  end // always_comb
+  wire [6:0]  io_gpio_seg_6_h = casez_tmp_5;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  always_comb begin	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    casez (seg[31:28])	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+      4'b0000:
+        casez_tmp_6 = 7'h40;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0001:
+        casez_tmp_6 = 7'h79;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0010:
+        casez_tmp_6 = 7'h24;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0011:
+        casez_tmp_6 = 7'h30;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0100:
+        casez_tmp_6 = 7'h19;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0101:
+        casez_tmp_6 = 7'h12;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0110:
+        casez_tmp_6 = 7'h2;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b0111:
+        casez_tmp_6 = 7'h78;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1000:
+        casez_tmp_6 = 7'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1001:
+        casez_tmp_6 = 7'h10;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1010:
+        casez_tmp_6 = 7'h8;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1011:
+        casez_tmp_6 = 7'h3;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1100:
+        casez_tmp_6 = 7'h46;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1101:
+        casez_tmp_6 = 7'h21;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      4'b1110:
+        casez_tmp_6 = 7'h6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+      default:
+        casez_tmp_6 = 7'hE;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+    endcase	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :64:40, :86:38]
+  end // always_comb
+  wire [6:0]  io_gpio_seg_7_h = casez_tmp_6;	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40]
+  always @(posedge clock) begin
+    if (reset) begin
+      led <= 16'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20]
+      seg <= 32'h0;	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20]
+    end
+    else begin
+      if (_GEN & _org_data_T)	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20, :48:{37,54}, :49:24, :52:42, :53:11]
+        led <= wdata[15:0];	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20, :42:8, :53:11]
+      if (~_GEN | _org_data_T) begin	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :48:{37,54}, :49:24, :52:42]
+      end
+      else	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :48:54, :52:42]
+        seg <= wdata;	// @[src/main/scala/ysyxSoC/GPIO.scala:33:20, :42:8]
+    end
+  end // always @(posedge)
+  `ifdef ENABLE_INITIAL_REG_
+    `ifdef FIRRTL_BEFORE_INITIAL
+      `FIRRTL_BEFORE_INITIAL
+    `endif // FIRRTL_BEFORE_INITIAL
+    logic [31:0] _RANDOM[0:1];
+    initial begin
+      `ifdef INIT_RANDOM_PROLOG_
+        `INIT_RANDOM_PROLOG_
+      `endif // INIT_RANDOM_PROLOG_
+      `ifdef RANDOMIZE_REG_INIT
+        for (logic [1:0] i = 2'h0; i < 2'h2; i += 2'h1) begin
+          _RANDOM[i[0]] = `RANDOM;
+        end
+        led = _RANDOM[1'h0][15:0];	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20]
+        seg = {_RANDOM[1'h0][31:16], _RANDOM[1'h1][15:0]};	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20, :33:20]
+      `endif // RANDOMIZE_REG_INIT
+    end // initial
+    `ifdef FIRRTL_AFTER_INITIAL
+      `FIRRTL_AFTER_INITIAL
+    `endif // FIRRTL_AFTER_INITIAL
+  `endif // ENABLE_INITIAL_REG_
+  assign io_in_prdata = {16'h0, io_gpio_in};	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20, :36:16]
+  assign io_gpio_out = led;	// @[src/main/scala/ysyxSoC/GPIO.scala:31:20]
+  assign io_gpio_seg_0 = {1'h0, io_gpio_seg_0_h};	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40, :86:20]
+  assign io_gpio_seg_1 = {1'h0, io_gpio_seg_1_h};	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40, :86:20]
+  assign io_gpio_seg_2 = {1'h0, io_gpio_seg_2_h};	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40, :86:20]
+  assign io_gpio_seg_3 = {1'h0, io_gpio_seg_3_h};	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40, :86:20]
+  assign io_gpio_seg_4 = {1'h0, io_gpio_seg_4_h};	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40, :86:20]
+  assign io_gpio_seg_5 = {1'h0, io_gpio_seg_5_h};	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40, :86:20]
+  assign io_gpio_seg_6 = {1'h0, io_gpio_seg_6_h};	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40, :86:20]
+  assign io_gpio_seg_7 = {1'h0, io_gpio_seg_7_h};	// @[src/main/scala/ysyxSoC/GPIO.scala:64:40, :86:20]
+endmodule
 
 module APBGPIO(
   input         clock,
@@ -3145,57 +3536,50 @@ module APBGPIO(
   input  [28:0] auto_in_paddr,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
   input  [31:0] auto_in_pwdata,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
   input  [3:0]  auto_in_pstrb,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
-  input  [15:0] gpio_bundle_in,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-  output        auto_in_pready,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
-                auto_in_pslverr,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
+  input  [15:0] gpio_bundle_in,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
   output [31:0] auto_in_prdata,	// @[src/main/scala/diplomacy/LazyModule.scala:367:18]
-  output [15:0] gpio_bundle_out,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-  output [7:0]  gpio_bundle_seg_0,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-                gpio_bundle_seg_1,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-                gpio_bundle_seg_2,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-                gpio_bundle_seg_3,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-                gpio_bundle_seg_4,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-                gpio_bundle_seg_5,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-                gpio_bundle_seg_6,	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
-                gpio_bundle_seg_7	// @[src/main/scala/ysyxSoC/GPIO.scala:46:25]
+  output [15:0] gpio_bundle_out,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
+  output [7:0]  gpio_bundle_seg_0,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
+                gpio_bundle_seg_1,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
+                gpio_bundle_seg_2,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
+                gpio_bundle_seg_3,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
+                gpio_bundle_seg_4,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
+                gpio_bundle_seg_5,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
+                gpio_bundle_seg_6,	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
+                gpio_bundle_seg_7	// @[src/main/scala/ysyxSoC/GPIO.scala:104:25]
 );
 
   wire [31:0] nodeIn_prdata;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-  wire        nodeIn_pslverr;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-  wire        nodeIn_pready;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
   wire        nodeIn_psel = auto_in_psel;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
   wire        nodeIn_penable = auto_in_penable;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
   wire        nodeIn_pwrite = auto_in_pwrite;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
   wire [28:0] nodeIn_paddr = auto_in_paddr;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
   wire [31:0] nodeIn_pwdata = auto_in_pwdata;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
   wire [3:0]  nodeIn_pstrb = auto_in_pstrb;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-  wire [2:0]  nodeIn_pprot = 3'h1;	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1214:17, src/main/scala/ysyxSoC/GPIO.scala:48:23]
-  gpio_top_apb mgpio (	// @[src/main/scala/ysyxSoC/GPIO.scala:48:23]
-    .clock      (clock),
-    .reset      (reset),
-    .in_psel    (nodeIn_psel),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-    .in_penable (nodeIn_penable),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-    .in_pwrite  (nodeIn_pwrite),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-    .in_paddr   ({3'h0, nodeIn_paddr}),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17, src/main/scala/ysyxSoC/GPIO.scala:51:17]
-    .in_pprot   (3'h1),	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1214:17, src/main/scala/ysyxSoC/GPIO.scala:48:23]
-    .in_pwdata  (nodeIn_pwdata),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-    .in_pstrb   (nodeIn_pstrb),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-    .gpio_in    (gpio_bundle_in),
-    .in_pready  (nodeIn_pready),
-    .in_pslverr (nodeIn_pslverr),
-    .in_prdata  (nodeIn_prdata),
-    .gpio_out   (gpio_bundle_out),
-    .gpio_seg_0 (gpio_bundle_seg_0),
-    .gpio_seg_1 (gpio_bundle_seg_1),
-    .gpio_seg_2 (gpio_bundle_seg_2),
-    .gpio_seg_3 (gpio_bundle_seg_3),
-    .gpio_seg_4 (gpio_bundle_seg_4),
-    .gpio_seg_5 (gpio_bundle_seg_5),
-    .gpio_seg_6 (gpio_bundle_seg_6),
-    .gpio_seg_7 (gpio_bundle_seg_7)
+  wire [2:0]  nodeIn_pprot = 3'h1;	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1214:17, src/main/scala/ysyxSoC/GPIO.scala:106:23]
+  wire        nodeIn_pready = 1'h1;	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1214:17, src/main/scala/ysyxSoC/GPIO.scala:106:23]
+  wire        nodeIn_pslverr = 1'h0;	// @[src/main/scala/diplomacy/LazyModule.scala:367:18, src/main/scala/diplomacy/Nodes.scala:1214:17, src/main/scala/ysyxSoC/GPIO.scala:106:23]
+  gpioChisel mgpio (	// @[src/main/scala/ysyxSoC/GPIO.scala:106:23]
+    .clock         (clock),
+    .reset         (reset),
+    .io_in_psel    (nodeIn_psel),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
+    .io_in_penable (nodeIn_penable),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
+    .io_in_pwrite  (nodeIn_pwrite),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
+    .io_in_paddr   ({3'h0, nodeIn_paddr}),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17, src/main/scala/ysyxSoC/GPIO.scala:109:17]
+    .io_in_pwdata  (nodeIn_pwdata),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
+    .io_in_pstrb   (nodeIn_pstrb),	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
+    .io_gpio_in    (gpio_bundle_in),
+    .io_in_prdata  (nodeIn_prdata),
+    .io_gpio_out   (gpio_bundle_out),
+    .io_gpio_seg_0 (gpio_bundle_seg_0),
+    .io_gpio_seg_1 (gpio_bundle_seg_1),
+    .io_gpio_seg_2 (gpio_bundle_seg_2),
+    .io_gpio_seg_3 (gpio_bundle_seg_3),
+    .io_gpio_seg_4 (gpio_bundle_seg_4),
+    .io_gpio_seg_5 (gpio_bundle_seg_5),
+    .io_gpio_seg_6 (gpio_bundle_seg_6),
+    .io_gpio_seg_7 (gpio_bundle_seg_7)
   );
-  assign auto_in_pready = nodeIn_pready;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
-  assign auto_in_pslverr = nodeIn_pslverr;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
   assign auto_in_prdata = nodeIn_prdata;	// @[src/main/scala/diplomacy/Nodes.scala:1214:17]
 endmodule
 
@@ -4468,8 +4852,6 @@ module ysyxSoCASIC(
   wire        _lkeyboard_auto_in_pready;	// @[src/main/scala/ysyxSoC/SoC.scala:35:29]
   wire        _lkeyboard_auto_in_pslverr;	// @[src/main/scala/ysyxSoC/SoC.scala:35:29]
   wire [31:0] _lkeyboard_auto_in_prdata;	// @[src/main/scala/ysyxSoC/SoC.scala:35:29]
-  wire        _lgpio_auto_in_pready;	// @[src/main/scala/ysyxSoC/SoC.scala:34:25]
-  wire        _lgpio_auto_in_pslverr;	// @[src/main/scala/ysyxSoC/SoC.scala:34:25]
   wire [31:0] _lgpio_auto_in_prdata;	// @[src/main/scala/ysyxSoC/SoC.scala:34:25]
   wire        _luart_auto_in_pready;	// @[src/main/scala/ysyxSoC/SoC.scala:33:25]
   wire        _luart_auto_in_pslverr;	// @[src/main/scala/ysyxSoC/SoC.scala:33:25]
@@ -4726,8 +5108,6 @@ module ysyxSoCASIC(
     .auto_out_5_pready  (_lkeyboard_auto_in_pready),	// @[src/main/scala/ysyxSoC/SoC.scala:35:29]
     .auto_out_5_pslverr (_lkeyboard_auto_in_pslverr),	// @[src/main/scala/ysyxSoC/SoC.scala:35:29]
     .auto_out_5_prdata  (_lkeyboard_auto_in_prdata),	// @[src/main/scala/ysyxSoC/SoC.scala:35:29]
-    .auto_out_4_pready  (_lgpio_auto_in_pready),	// @[src/main/scala/ysyxSoC/SoC.scala:34:25]
-    .auto_out_4_pslverr (_lgpio_auto_in_pslverr),	// @[src/main/scala/ysyxSoC/SoC.scala:34:25]
     .auto_out_4_prdata  (_lgpio_auto_in_prdata),	// @[src/main/scala/ysyxSoC/SoC.scala:34:25]
     .auto_out_3_pready  (_lsdram_auto_in_pready),	// @[src/main/scala/ysyxSoC/SoC.scala:44:26]
     .auto_out_3_pslverr (_lsdram_auto_in_pslverr),	// @[src/main/scala/ysyxSoC/SoC.scala:44:26]
@@ -4845,8 +5225,6 @@ module ysyxSoCASIC(
     .auto_in_pwdata    (_apbxbar_auto_out_4_pwdata),	// @[src/main/scala/ysyxSoC/SoC.scala:28:27]
     .auto_in_pstrb     (_apbxbar_auto_out_4_pstrb),	// @[src/main/scala/ysyxSoC/SoC.scala:28:27]
     .gpio_bundle_in    (gpio_in),
-    .auto_in_pready    (_lgpio_auto_in_pready),
-    .auto_in_pslverr   (_lgpio_auto_in_pslverr),
     .auto_in_prdata    (_lgpio_auto_in_prdata),
     .gpio_bundle_out   (gpio_out),
     .gpio_bundle_seg_0 (gpio_seg_0),
