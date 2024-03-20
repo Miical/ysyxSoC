@@ -18,7 +18,7 @@ class SDRAMIO extends Bundle {
   val cas = Output(Bool())
   val we  = Output(Bool())
   val a   = Output(UInt(13.W))
-  val ba  = Output(UInt(2.W))
+  val ba  = Output(UInt(3.W))
   val dqm = Output(UInt(4.W))
   val dq  = Analog(32.W)
 }
@@ -57,7 +57,7 @@ class sdramChisel extends RawModule {
   withClockAndReset(io.clk.asClock, (!io.cke).asAsyncReset) {
     val set_mode :: auto_refresh :: precharge :: active :: write :: read :: burst_terminate :: nop :: Nil = Enum(8)
 
-    val mem = Mem(4 * 8192 * 512, UInt(32.W))
+    val mem = Mem(8 * 8192 * 512, UInt(32.W))
 
     val cmd = Cat(io.cs, io.ras, io.cas, io.we)
     val mode = RegInit(0.U(13.W))
@@ -65,12 +65,12 @@ class sdramChisel extends RawModule {
     val cas_latency = mode(6, 4)
     val burst_length = mode(2, 0)
 
-    val rows = RegInit(VecInit(Seq.fill(4)(0.U(13.W))))
+    val rows = RegInit(VecInit(Seq.fill(8)(0.U(13.W))))
 
     val write_burst_cnt = RegInit(0.U(3.W))
-    val write_burst_addr = RegInit(0.U(log2Ceil(4 * 8192 * 512).W))
+    val write_burst_addr = RegInit(0.U(log2Ceil(8 * 8192 * 512).W))
     val read_burst_cnt = RegInit(0.U(3.W))
-    val read_burst_addr = RegInit(0.U(log2Ceil(4 * 8192 * 512).W))
+    val read_burst_addr = RegInit(0.U(log2Ceil(8 * 8192 * 512).W))
 
     val rdelay_data = Mem(16, UInt(32.W))
     val rdelay_en = Mem(16, Bool())

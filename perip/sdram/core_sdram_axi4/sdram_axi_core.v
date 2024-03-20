@@ -57,7 +57,7 @@ module sdram_axi_core
     ,output          sdram_we_o
     ,output [  3:0]  sdram_dqm_o
     ,output [ 12:0]  sdram_addr_o
-    ,output [  1:0]  sdram_ba_o
+    ,output [  2:0]  sdram_ba_o
     ,output [ 31:0]  sdram_data_output_o
     ,output          sdram_data_out_en_o
 );
@@ -68,14 +68,14 @@ module sdram_axi_core
 // Key Params
 //-----------------------------------------------------------------
 parameter SDRAM_MHZ              = 50;
-parameter SDRAM_ADDR_W           = 24;
+parameter SDRAM_ADDR_W           = 25;
 parameter SDRAM_COL_W            = 9;
 parameter SDRAM_READ_LATENCY     = 2;
 
 //-----------------------------------------------------------------
 // Defines / Local params
 //-----------------------------------------------------------------
-localparam SDRAM_BANK_W          = 2;
+localparam SDRAM_BANK_W          = 3;
 localparam SDRAM_DQM_W           = 4;
 localparam SDRAM_BANKS           = 2 ** SDRAM_BANK_W;
 localparam SDRAM_ROW_W           = SDRAM_ADDR_W - SDRAM_COL_W - SDRAM_BANK_W;
@@ -178,8 +178,8 @@ reg  [STATE_W-1:0]     delay_state_q;
 
 // Address bits
 wire [SDRAM_ROW_W-1:0]  addr_col_w  = {{(SDRAM_ROW_W-SDRAM_COL_W){1'b0}}, ram_addr_w[SDRAM_COL_W+1:2]};
-wire [SDRAM_ROW_W-1:0]  addr_row_w  = ram_addr_w[SDRAM_ADDR_W+1:SDRAM_COL_W+4];
-wire [SDRAM_BANK_W-1:0] addr_bank_w = ram_addr_w[SDRAM_COL_W+3:SDRAM_COL_W+2];
+wire [SDRAM_ROW_W-1:0]  addr_row_w  = ram_addr_w[SDRAM_ADDR_W+1:SDRAM_COL_W+5];
+wire [SDRAM_BANK_W-1:0] addr_bank_w = ram_addr_w[SDRAM_COL_W+4:SDRAM_COL_W+2];
 
 //-----------------------------------------------------------------
 // SDRAM State Machine

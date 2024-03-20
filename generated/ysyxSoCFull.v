@@ -226,23 +226,23 @@ endmodule
 
 // VCS coverage exclude_file
 module mem_combMem_1(	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
-  input  [23:0] R0_addr,
+  input  [24:0] R0_addr,
   input         R0_en,
                 R0_clk,
-  input  [23:0] R1_addr,
+  input  [24:0] R1_addr,
   input         R1_en,
                 R1_clk,
-  input  [23:0] R2_addr,
+  input  [24:0] R2_addr,
   input         R2_en,
                 R2_clk,
-  input  [23:0] R3_addr,
+  input  [24:0] R3_addr,
   input         R3_en,
                 R3_clk,
-  input  [23:0] W0_addr,
+  input  [24:0] W0_addr,
   input         W0_en,
                 W0_clk,
   input  [31:0] W0_data,
-  input  [23:0] W1_addr,
+  input  [24:0] W1_addr,
   input         W1_en,
                 W1_clk,
   input  [31:0] W1_data,
@@ -252,7 +252,7 @@ module mem_combMem_1(	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
                 R3_data
 );
 
-  reg [31:0] Memory[0:16777215];	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
+  reg [31:0] Memory[0:33554431];	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
   always @(posedge W0_clk) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
     if (W0_en)	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
       Memory[W0_addr] <= W0_data;	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
@@ -264,9 +264,9 @@ module mem_combMem_1(	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
     initial begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
       `INIT_RANDOM_PROLOG_	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
       `ifdef RANDOMIZE_MEM_INIT	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
-        for (logic [24:0] i = 25'h0; i < 25'h1000000; i += 25'h1) begin
+        for (logic [25:0] i = 26'h0; i < 26'h2000000; i += 26'h1) begin
           _RANDOM_MEM = `RANDOM;	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
-          Memory[i[23:0]] = _RANDOM_MEM;	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
+          Memory[i[24:0]] = _RANDOM_MEM;	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
         end	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
       `endif // RANDOMIZE_MEM_INIT
     end // initial
@@ -4037,7 +4037,7 @@ module APBSDRAM(
                 sdram_bundle_cas,	// @[src/main/scala/ysyxSoC/SDRAM.scala:185:26]
                 sdram_bundle_we,	// @[src/main/scala/ysyxSoC/SDRAM.scala:185:26]
   output [12:0] sdram_bundle_a,	// @[src/main/scala/ysyxSoC/SDRAM.scala:185:26]
-  output [1:0]  sdram_bundle_ba,	// @[src/main/scala/ysyxSoC/SDRAM.scala:185:26]
+  output [2:0]  sdram_bundle_ba,	// @[src/main/scala/ysyxSoC/SDRAM.scala:185:26]
   output [3:0]  sdram_bundle_dqm	// @[src/main/scala/ysyxSoC/SDRAM.scala:185:26]
 );
 
@@ -4403,7 +4403,7 @@ module ysyxSoCASIC(
                 sdram_cas,	// @[src/main/scala/ysyxSoC/SoC.scala:80:19]
                 sdram_we,	// @[src/main/scala/ysyxSoC/SoC.scala:80:19]
   output [12:0] sdram_a,	// @[src/main/scala/ysyxSoC/SoC.scala:80:19]
-  output [1:0]  sdram_ba,	// @[src/main/scala/ysyxSoC/SoC.scala:80:19]
+  output [2:0]  sdram_ba,	// @[src/main/scala/ysyxSoC/SoC.scala:80:19]
   output [3:0]  sdram_dqm,	// @[src/main/scala/ysyxSoC/SoC.scala:80:19]
   output [15:0] gpio_out,	// @[src/main/scala/ysyxSoC/SoC.scala:81:18]
   output [7:0]  gpio_seg_0,	// @[src/main/scala/ysyxSoC/SoC.scala:81:18]
@@ -5239,7 +5239,7 @@ module sdramChisel(
                io_cas,	// @[src/main/scala/ysyxSoC/SDRAM.scala:49:14]
                io_we,	// @[src/main/scala/ysyxSoC/SDRAM.scala:49:14]
   input [12:0] io_a,	// @[src/main/scala/ysyxSoC/SDRAM.scala:49:14]
-  input [1:0]  io_ba,	// @[src/main/scala/ysyxSoC/SDRAM.scala:49:14]
+  input [2:0]  io_ba,	// @[src/main/scala/ysyxSoC/SDRAM.scala:49:14]
   input [3:0]  io_dqm,	// @[src/main/scala/ysyxSoC/SDRAM.scala:49:14]
   inout [31:0] io_dq	// @[src/main/scala/ysyxSoC/SDRAM.scala:49:14]
 );
@@ -5296,31 +5296,43 @@ module sdramChisel(
   reg  [12:0] rows_1;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
   reg  [12:0] rows_2;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
   reg  [12:0] rows_3;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
-  reg  [23:0] write_burst_addr;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35]
-  reg  [23:0] read_burst_addr;	// @[src/main/scala/ysyxSoC/SDRAM.scala:73:34]
+  reg  [12:0] rows_4;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+  reg  [12:0] rows_5;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+  reg  [12:0] rows_6;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+  reg  [12:0] rows_7;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+  reg  [24:0] write_burst_addr;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35]
+  reg  [24:0] read_burst_addr;	// @[src/main/scala/ysyxSoC/SDRAM.scala:73:34]
   wire        _GEN_0 = cmd == 4'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:62:18, :91:15, :131:16]
   wire        _GEN_1 = cmd == 4'h3;	// @[src/main/scala/ysyxSoC/SDRAM.scala:62:18, :80:18, :94:22]
   wire        _GEN_2 = cmd == 4'h5;	// @[src/main/scala/ysyxSoC/SDRAM.scala:62:18, :80:18, :97:22]
   always_comb begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:40]
     casez (io_ba)	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:40]
-      2'b00:
+      3'b000:
         casez_tmp = rows_0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :99:40]
-      2'b01:
+      3'b001:
         casez_tmp = rows_1;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :99:40]
-      2'b10:
+      3'b010:
         casez_tmp = rows_2;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :99:40]
-      default:
+      3'b011:
         casez_tmp = rows_3;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :99:40]
+      3'b100:
+        casez_tmp = rows_4;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :99:40]
+      3'b101:
+        casez_tmp = rows_5;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :99:40]
+      3'b110:
+        casez_tmp = rows_6;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :99:40]
+      default:
+        casez_tmp = rows_7;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :99:40]
     endcase	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:40]
   end // always_comb
-  wire [15:0] _GEN_3 = {1'h0, io_ba, 13'h0};	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :99:40]
-  wire [15:0] _GEN_4 = {3'h0, casez_tmp};	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:40]
-  wire [25:0] _GEN_5 = {13'h0, io_a};	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :99:64]
-  wire [25:0] unit_addr = {1'h0, _GEN_3 + _GEN_4, 9'h0} + _GEN_5;	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:{40,55,64}]
+  wire [16:0] _GEN_3 = {1'h0, io_ba, 13'h0};	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :99:40]
+  wire [16:0] _GEN_4 = {4'h0, casez_tmp};	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:40, :131:16]
+  wire [26:0] _GEN_5 = {14'h0, io_a};	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:{31,64}]
+  wire [26:0] unit_addr = {1'h0, _GEN_3 + _GEN_4, 9'h0} + _GEN_5;	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:{40,55,64}]
   wire        _GEN_6 = _GEN_0 | _GEN_1;	// @[src/main/scala/ysyxSoC/SDRAM.scala:73:34, :91:{15,29}, :94:{22,34}, :97:32]
   wire        _GEN_7 = ~_GEN_6 & _GEN_2;	// @[src/main/scala/ysyxSoC/SDRAM.scala:73:34, :75:26, :91:29, :94:34, :97:{22,32}]
   wire        _GEN_8 = cmd == 4'h4;	// @[src/main/scala/ysyxSoC/SDRAM.scala:62:18, :80:18, :107:22]
-  wire [25:0] unit_addr_1 = {1'h0, _GEN_3 + _GEN_4, 9'h0} + _GEN_5;	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:{40,55,64}, :109:{40,64}]
+  wire [26:0] unit_addr_1 = {1'h0, _GEN_3 + _GEN_4, 9'h0} + _GEN_5;	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:{40,55,64}, :109:{40,64}]
   wire        _GEN_9 = _GEN_0 | _GEN_1 | _GEN_2;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :91:{15,29}, :94:{22,34}, :97:{22,32}, :107:33]
   wire        _GEN_10 = ~_GEN_9 & _GEN_8;	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18, :71:35, :91:29, :94:34, :97:32, :107:{22,33}]
   wire [15:0] wdata_lo =
@@ -5330,7 +5342,7 @@ module sdramChisel(
     {wmask[3] ? _dqin_buf_din[31:24] : _mem_ext_R2_data[31:24],
      wmask[2] ? _dqin_buf_din[23:16] : _mem_ext_R2_data[23:16]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18, :64:17, :85:{10,14,19,28,46}, :86:{14,19,28,46}, src/main/scala/ysyxSoC/TriState.scala:32:21]
   wire [31:0] wdata = {wdata_hi, wdata_lo};	// @[src/main/scala/ysyxSoC/SDRAM.scala:85:10]
-  wire [23:0] addr = write_burst_addr + {21'h0, burst_length - write_burst_cnt + 3'h1};	// @[src/main/scala/ysyxSoC/SDRAM.scala:66:28, :70:34, :71:35, :122:{35,51,69}]
+  wire [24:0] addr = write_burst_addr + {22'h0, burst_length - write_burst_cnt + 3'h1};	// @[src/main/scala/ysyxSoC/SDRAM.scala:66:28, :70:34, :71:35, :122:{35,51,69}]
   wire [15:0] wdata_lo_1 =
     {wmask[1] ? _dqin_buf_din[15:8] : _mem_ext_R3_data[15:8],
      wmask[0] ? _dqin_buf_din[7:0] : _mem_ext_R3_data[7:0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18, :64:17, :85:10, :87:{14,19,28,45}, :88:{14,19,28,44}, src/main/scala/ysyxSoC/TriState.scala:32:21]
@@ -5349,30 +5361,50 @@ module sdramChisel(
       rows_1 <= 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
       rows_2 <= 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
       rows_3 <= 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+      rows_4 <= 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+      rows_5 <= 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+      rows_6 <= 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+      rows_7 <= 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
       write_burst_cnt <= 3'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:70:34]
-      write_burst_addr <= 24'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35]
+      write_burst_addr <= 25'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35]
       read_burst_cnt <= 3'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:72:33]
-      read_burst_addr <= 24'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :73:34]
+      read_burst_addr <= 25'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :73:34]
     end
     else begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:49:14]
       if (_GEN_0)	// @[src/main/scala/ysyxSoC/SDRAM.scala:91:15]
         mode <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23]
-      if (_GEN_0 | ~(_GEN_1 & io_ba == 2'h0)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
+      if (_GEN_0 | ~(_GEN_1 & io_ba == 3'h0)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
       end
       else	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:29, :94:34]
         rows_0 <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
-      if (_GEN_0 | ~(_GEN_1 & io_ba == 2'h1)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
+      if (_GEN_0 | ~(_GEN_1 & io_ba == 3'h1)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
       end
       else	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:29, :94:34]
         rows_1 <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
-      if (_GEN_0 | ~(_GEN_1 & io_ba == 2'h2)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
+      if (_GEN_0 | ~(_GEN_1 & io_ba == 3'h2)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
       end
       else	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:29, :94:34]
         rows_2 <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
-      if (_GEN_0 | ~(_GEN_1 & (&io_ba))) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
+      if (_GEN_0 | ~(_GEN_1 & io_ba == 3'h3)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
       end
       else	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:29, :94:34]
         rows_3 <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+      if (_GEN_0 | ~(_GEN_1 & io_ba == 3'h4)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
+      end
+      else	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:29, :94:34]
+        rows_4 <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+      if (_GEN_0 | ~(_GEN_1 & io_ba == 3'h5)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
+      end
+      else	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:29, :94:34]
+        rows_5 <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+      if (_GEN_0 | ~(_GEN_1 & io_ba == 3'h6)) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
+      end
+      else	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:29, :94:34]
+        rows_6 <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+      if (_GEN_0 | ~(_GEN_1 & (&io_ba))) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:{15,29}, :94:{22,34}, :95:19]
+      end
+      else	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :91:29, :94:34]
+        rows_7 <= io_a;	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
       if (|write_burst_cnt)	// @[src/main/scala/ysyxSoC/SDRAM.scala:70:34, :120:27]
         write_burst_cnt <= write_burst_cnt - 3'h1;	// @[src/main/scala/ysyxSoC/SDRAM.scala:70:34, :121:42]
       else if (_GEN_13) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:70:34, :71:35, :91:29, :94:34, :97:32, :107:33]
@@ -5382,7 +5414,7 @@ module sdramChisel(
       if (_GEN_13) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :91:29, :94:34, :97:32, :107:33]
       end
       else	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :91:29, :94:34, :97:32, :107:33]
-        write_burst_addr <= unit_addr_1[23:0];	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :109:64, :111:24]
+        write_burst_addr <= unit_addr_1[24:0];	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :109:64, :111:24]
       if (|read_burst_cnt)	// @[src/main/scala/ysyxSoC/SDRAM.scala:72:33, :128:26]
         read_burst_cnt <= read_burst_cnt - 3'h1;	// @[src/main/scala/ysyxSoC/SDRAM.scala:72:33, :129:40]
       else if (_GEN_12) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:72:33, :73:34, :91:29, :94:34, :97:32]
@@ -5392,31 +5424,35 @@ module sdramChisel(
       if (_GEN_12) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:73:34, :91:29, :94:34, :97:32]
       end
       else	// @[src/main/scala/ysyxSoC/SDRAM.scala:73:34, :91:29, :94:34, :97:32]
-        read_burst_addr <= unit_addr[23:0];	// @[src/main/scala/ysyxSoC/SDRAM.scala:73:34, :99:64, :102:23]
+        read_burst_addr <= unit_addr[24:0];	// @[src/main/scala/ysyxSoC/SDRAM.scala:73:34, :99:64, :102:23]
     end
   end // always @(posedge, posedge)
   `ifdef ENABLE_INITIAL_REG_
     `ifdef FIRRTL_BEFORE_INITIAL
       `FIRRTL_BEFORE_INITIAL
     `endif // FIRRTL_BEFORE_INITIAL
-    logic [31:0] _RANDOM[0:3];
+    logic [31:0] _RANDOM[0:5];
     initial begin
       `ifdef INIT_RANDOM_PROLOG_
         `INIT_RANDOM_PROLOG_
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT
-        for (logic [2:0] i = 3'h0; i < 3'h4; i += 3'h1) begin
-          _RANDOM[i[1:0]] = `RANDOM;
+        for (logic [2:0] i = 3'h0; i < 3'h6; i += 3'h1) begin
+          _RANDOM[i] = `RANDOM;
         end
-        mode = _RANDOM[2'h0][12:0];	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23]
-        rows_0 = _RANDOM[2'h0][25:13];	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
-        rows_1 = {_RANDOM[2'h0][31:26], _RANDOM[2'h1][6:0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
-        rows_2 = _RANDOM[2'h1][19:7];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
-        rows_3 = {_RANDOM[2'h1][31:20], _RANDOM[2'h2][0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
-        write_burst_cnt = _RANDOM[2'h2][3:1];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :70:34]
-        write_burst_addr = _RANDOM[2'h2][27:4];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :71:35]
-        read_burst_cnt = _RANDOM[2'h2][30:28];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :72:33]
-        read_burst_addr = {_RANDOM[2'h2][31], _RANDOM[2'h3][22:0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :73:34]
+        mode = _RANDOM[3'h0][12:0];	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23]
+        rows_0 = _RANDOM[3'h0][25:13];	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+        rows_1 = {_RANDOM[3'h0][31:26], _RANDOM[3'h1][6:0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+        rows_2 = _RANDOM[3'h1][19:7];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+        rows_3 = {_RANDOM[3'h1][31:20], _RANDOM[3'h2][0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+        rows_4 = _RANDOM[3'h2][13:1];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+        rows_5 = _RANDOM[3'h2][26:14];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+        rows_6 = {_RANDOM[3'h2][31:27], _RANDOM[3'h3][7:0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+        rows_7 = _RANDOM[3'h3][20:8];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23]
+        write_burst_cnt = _RANDOM[3'h3][23:21];	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :70:34]
+        write_burst_addr = {_RANDOM[3'h3][31:24], _RANDOM[3'h4][16:0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:68:23, :71:35]
+        read_burst_cnt = _RANDOM[3'h4][19:17];	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :72:33]
+        read_burst_addr = {_RANDOM[3'h4][31:20], _RANDOM[3'h5][12:0]};	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :73:34]
       `endif // RANDOMIZE_REG_INIT
       if (_GEN) begin	// @[src/main/scala/ysyxSoC/SDRAM.scala:57:38]
         mode = 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23]
@@ -5424,10 +5460,14 @@ module sdramChisel(
         rows_1 = 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
         rows_2 = 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
         rows_3 = 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+        rows_4 = 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+        rows_5 = 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+        rows_6 = 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
+        rows_7 = 13'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:63:23, :68:23]
         write_burst_cnt = 3'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:70:34]
-        write_burst_addr = 24'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35]
+        write_burst_addr = 25'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35]
         read_burst_cnt = 3'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:72:33]
-        read_burst_addr = 24'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :73:34]
+        read_burst_addr = 25'h0;	// @[src/main/scala/ysyxSoC/SDRAM.scala:71:35, :73:34]
       end
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL
@@ -5444,19 +5484,19 @@ module sdramChisel(
     .din    (_dqin_buf_din)
   );
   mem_combMem_1 mem_ext (	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18]
-    .R0_addr (unit_addr[23:0]),	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:64, :102:23]
+    .R0_addr (unit_addr[24:0]),	// @[src/main/scala/ysyxSoC/SDRAM.scala:99:64, :102:23]
     .R0_en   (_GEN_7),	// @[src/main/scala/ysyxSoC/SDRAM.scala:75:26, :91:29, :94:34, :97:32]
     .R0_clk  (io_clk),
-    .R1_addr (read_burst_addr + {21'h0, burst_length - read_burst_cnt + 3'h1}),	// @[src/main/scala/ysyxSoC/SDRAM.scala:66:28, :72:33, :73:34, :122:35, :130:{50,66,83}]
+    .R1_addr (read_burst_addr + {22'h0, burst_length - read_burst_cnt + 3'h1}),	// @[src/main/scala/ysyxSoC/SDRAM.scala:66:28, :72:33, :73:34, :122:35, :130:{50,66,83}]
     .R1_en   (|read_burst_cnt),	// @[src/main/scala/ysyxSoC/SDRAM.scala:72:33, :128:26]
     .R1_clk  (io_clk),
-    .R2_addr (unit_addr_1[23:0]),	// @[src/main/scala/ysyxSoC/SDRAM.scala:109:64, :114:37]
+    .R2_addr (unit_addr_1[24:0]),	// @[src/main/scala/ysyxSoC/SDRAM.scala:109:64, :114:37]
     .R2_en   (_GEN_10),	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18, :91:29, :94:34, :97:32, :107:33]
     .R2_clk  (io_clk),
     .R3_addr (addr),	// @[src/main/scala/ysyxSoC/SDRAM.scala:122:35]
     .R3_en   (|write_burst_cnt),	// @[src/main/scala/ysyxSoC/SDRAM.scala:70:34, :120:27]
     .R3_clk  (io_clk),
-    .W0_addr (unit_addr_1[23:0]),	// @[src/main/scala/ysyxSoC/SDRAM.scala:109:64, :114:37]
+    .W0_addr (unit_addr_1[24:0]),	// @[src/main/scala/ysyxSoC/SDRAM.scala:109:64, :114:37]
     .W0_en   (_GEN_10),	// @[src/main/scala/ysyxSoC/SDRAM.scala:60:18, :91:29, :94:34, :97:32, :107:33]
     .W0_clk  (io_clk),
     .W0_data (wdata),	// @[src/main/scala/ysyxSoC/SDRAM.scala:85:10]
@@ -5787,7 +5827,7 @@ module ysyxSoCFull(
   wire        _asic_sdram_cas;	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
   wire        _asic_sdram_we;	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
   wire [12:0] _asic_sdram_a;	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
-  wire [1:0]  _asic_sdram_ba;	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
+  wire [2:0]  _asic_sdram_ba;	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
   wire [3:0]  _asic_sdram_dqm;	// @[src/main/scala/ysyxSoC/SoC.scala:100:24]
   wire [3:0]  _io_dio_wire;	// @[src/main/scala/ysyxSoC/SoC.scala:136:23]
   wire [31:0] _io_dq_wire;	// @[src/main/scala/ysyxSoC/SoC.scala:138:23]
